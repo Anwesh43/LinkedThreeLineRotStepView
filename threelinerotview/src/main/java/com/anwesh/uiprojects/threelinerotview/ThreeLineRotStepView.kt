@@ -66,14 +66,16 @@ class ThreeLineRotStepView(ctx : Context) : View(ctx) {
 
     private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    override fun onDraw(canvas : Canvas) {
+    private val renderer : Renderer = Renderer(this)
 
+    override fun onDraw(canvas : Canvas) {
+        renderer.render(canvas, paint)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-
+                renderer.handleTap()
             }
         }
         return true
@@ -114,7 +116,7 @@ class ThreeLineRotStepView(ctx : Context) : View(ctx) {
             }
         }
 
-        fun start(cb : () -> Unit) {
+        fun start() {
             if (!animated) {
                 animated = true
                 view.postInvalidate()
@@ -196,6 +198,29 @@ class ThreeLineRotStepView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : ThreeLineRotStepView) {
+
+        private val animator : Animator = Animator(view)
+
+        private val curr : ThreeLineRotStep = ThreeLineRotStep(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(BACK_COLOR)
+            curr.draw(canvas, paint)
+            animator.animate {
+                curr.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            curr.startUpdating {
+                animator.start()
+            }
         }
     }
 }
