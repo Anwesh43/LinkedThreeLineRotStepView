@@ -223,4 +223,13 @@ class ThreeLineRotStepView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : ThreeLineRotStepView {
+            val view : ThreeLineRotStepView = ThreeLineRotStepView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
