@@ -34,12 +34,12 @@ fun Float.updateScale(dir : Float, a : Int, b : Int) : Float = dir * scGap * get
 fun Canvas.drawTLRNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
-    val gap : Float = w / (nodes)
+    val gap : Float = w / (nodes + 1)
     val size : Float = gap / SIZE_FACTOR
     val sc1 : Float = scale.divideScale(0, 2)
     val sc2 : Float = scale.divideScale(1, 2)
     val sc11 : Float = sc1.divideScale(0, 2)
-    val sc12 : Float = sc2.divideScale(1, 2)
+    val sc12 : Float = sc1.divideScale(1, 2)
     paint.color = COLOR
     paint.strokeWidth = Math.min(w, h) / STROKE_FACTOR
     paint.strokeCap = Paint.Cap.ROUND
